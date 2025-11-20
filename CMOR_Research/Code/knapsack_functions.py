@@ -524,7 +524,6 @@ def build_node_dataframe(dataset, num_vars):
     df = pd.DataFrame(rows)
     return df
 
-
 def compute_optimal_subtree_flags(dataset, best_val):
     
     """
@@ -609,7 +608,7 @@ def build_training_instance(instance_id, num_items=5, seed=None):
 
     return df_nodes
 
-def build_training_set(num_instances):
+def build_training_set(num_instances, num_items = None):
 
     """
     Generate a unified training dataset by sampling multiple random knapsack
@@ -643,7 +642,9 @@ def build_training_set(num_instances):
     all_dfs = []
 
     for i in range(num_instances):
-        num_items = np.random.randint(5, 9)
+
+        if num_items is None:
+            num_items = np.random.randint(5, 9)
         df_i = build_training_instance(instance_id = i, num_items = num_items)
         all_dfs.append(df_i)
 
