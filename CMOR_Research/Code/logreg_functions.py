@@ -195,7 +195,35 @@ def train_logreg(full_df: pd.DataFrame, test_size: float = 0.3, random_state: in
         "f1": f1_score(y_test, y_pred),
     }
 
-    return clf, metrics
+    return clf, metrics, (X_train, X_test, y_train, y_test)
 
+def inspect_logreg_coefficients(clf, X):
+    """
+    Print a sorted table of logistic regression coefficients.
+
+    Args:
+        clf: trained pipeline
+        X  : full feature DataFrame (columns must align with model)
+    """
+    logreg = clf.named_steps["logreg"]
+    coefs = logreg.coef_[0]
+    feat_names = X.columns
+    
+    coef_df = pd.DataFrame({
+        "feature": feat_names,
+        "coef": coefs,
+    }).sort_values("coef", key=abs, ascending=False)
+
+    print(coef_df)
+    return coef_df
+
+def prediction_distribution(clf, X):
+    probs = clf.predict_proba(X)[:,1]
+    preds = clf.predict(X)
+    
+    proportion_ones = preds.mean()
+    
+    print("Proportion predicted 1:", proportion_ones)
+    return probs, preds
 
 
