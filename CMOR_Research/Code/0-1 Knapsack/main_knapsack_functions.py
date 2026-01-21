@@ -540,6 +540,18 @@ def generate_knapsack_correlated(
 
     return KnapsackInstance(W=W, values=values.astype(float), capacities=caps)
 
+def correlated_wrapper(num_items: int = 5, seed=None, **_):
+    rng = np.random.default_rng(seed)
+    alpha = float(rng.uniform(8.0, 12.0))
+    max_weight = int(rng.integers(15, 31))  # 15..30 inclusive
+    return generate_knapsack_correlated(
+        num_items=num_items,
+        seed=seed,
+        alpha=alpha,
+        max_weight=max_weight,
+        noise_std=2.0,   # keep fixed, or also randomize if you want
+    )
+
 
 # Backwards-compatible alias if you were calling `generate_knapsack_instance`
 def generate_knapsack_instance(
